@@ -20,6 +20,7 @@ func hasCycle1(head *ListNode) bool {
 
 func hasCycle(head *ListNode) bool {
 	visited := make(map[*ListNode]struct{})
+
 	for head != nil {
 		if _, ok := visited[head]; ok {
 			return true
