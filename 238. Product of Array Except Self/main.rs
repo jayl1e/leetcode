@@ -1,38 +1,19 @@
-use std::vec::Vec;
 struct Solution;
+
 impl Solution {
-    pub fn product_except_self(nums: Vec<i32>) -> Vec<i32> {
-        let mut nums = nums;
-        let (prod, zeros) = nums.iter().fold((1,0), |(mut prod, mut zeros),item|{
-            if *item==0{
-                if zeros!=0{
-                    prod = 0
-                }
-                zeros+=1;
-            }else{
-                prod *= item;
-            }
-            (prod,zeros)
-        });
-        match zeros{
+    pub fn product_except_self(mut nums: Vec<i32>) -> Vec<i32> {
+        let zeros = nums.iter().filter(|&&item|{item==0}).count();
+        match zeros {
             0=>{
-                nums.iter_mut().for_each(|item|{
-                    *item = prod/(*item);
-                })
+                let prod:i32 = nums.iter().product();
+                nums.iter_mut().for_each(|item|{*item = prod/(*item)});
             },
             1=>{
-                nums.iter_mut().for_each(|item|{
-                    if *item==0{
-                        *item = prod;
-                    }else{
-                        *item = 0;
-                    }
-                })
+                let prod:i32 = nums.iter().filter(|&&item|{item!=0}).product();
+                nums.iter_mut().for_each(|item|{*item = if *item == 0{prod}else{0}});
             },
             _=>{
-                nums.iter_mut().for_each(|item|{
-                    *item =0;
-                })
+                nums.iter_mut().for_each(|item|{*item = 0});
             }
         }
         nums
